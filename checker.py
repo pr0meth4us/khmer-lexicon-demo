@@ -73,7 +73,8 @@ class Checker:
             english = (row.get("english") or "").strip()
             entry = {k: (row.get(k) or "").strip() for k in
                      ("id", "khmer", "english", "french", "category",
-                      "source", "author", "year", "definition")}
+                      "source", "author", "year", "definition", "pos",
+                      "examples")}
             entries.append(entry)
             # Entries whose "khmer" field holds no Khmer at all are extraction
             # failures (legacy-font OCR read as Latin). 21 of them; indexing

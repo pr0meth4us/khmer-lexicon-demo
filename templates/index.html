@@ -91,7 +91,20 @@
 .entry .kh{font-size:23px;font-weight:700;line-height:1.7}
 .entry .eng{font-size:16px;margin-top:2px}
 .entry .fr{color:var(--muted);font-size:14px}
-.entry .src{color:var(--muted);font-size:13px;margin-top:6px;line-height:1.5}
+.entry .fr{color:var(--muted);font-size:14px;font-weight:400}
+.entry .pos{font-size:12.5px;color:var(--muted);font-weight:400;margin-right:8px;
+  border:1px solid var(--line);border-radius:6px;padding:1px 7px;vertical-align:middle}
+.entry .def{margin:8px 0 0;font-size:15.5px;line-height:1.85}
+.entry .def.clamped{display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;
+  overflow:hidden;cursor:pointer}
+.entry .def.clamped::after{content:"… បន្ថែម";color:var(--brand);font-size:13.5px}
+.entry .def.nodef{color:var(--muted);font-size:13.5px;line-height:1.6}
+.entry .eg-txt{margin:10px 0 0;padding:9px 12px;border-radius:9px;
+  background:var(--brand-soft);font-size:14.5px;line-height:1.8}
+.entry .eg-txt .lbl{display:block;font-size:12px;color:var(--muted);
+  letter-spacing:.04em;margin-bottom:2px}
+.entry .src{color:var(--muted);font-size:12.5px;margin-top:10px;line-height:1.5;
+  padding-top:8px;border-top:1px solid var(--line)}
 .entry .none{color:var(--muted);font-size:13.5px;margin-top:2px}
 .copy{float:right;font-size:13px;padding:6px 12px;border-radius:8px;
   border:1px solid var(--line);background:var(--card);color:var(--brand);cursor:pointer}
@@ -126,20 +139,48 @@ TABS.forEach(name => $('tab-'+name).onclick = () => {
 });
 
 /* ---- one entry card ---- */
+// Part-of-speech codes as they appear across the source glossaries: Khmer
+// abbreviations from NCKL, French gender marks from the bilingual volumes.
+const POS = {'ន.':'នាម · noun','ន':'នាម · noun','noun':'នាម · noun',
+  'កិ.':'កិរិយា · verb','កិ':'កិរិយា · verb','verb':'កិរិយា · verb',
+  'គុ.':'គុណនាម · adj','adj':'គុណនាម · adj',
+  'f.':'f.','f':'f.','m.':'m.','m':'m.','(m.)':'m.','(f.)':'f.'};
+
 function entryCard(e){
+  const pos = e.pos ? `<span class="pos">${esc(POS[e.pos] || e.pos)}</span>` : '';
   const gloss = e.english
-    ? `<div class="eng">${esc(e.english)}</div>`
+    ? `<div class="eng">${esc(e.english)}${e.french
+        ? ` <span class="fr">· បារាំង ${esc(e.french)}</span>` : ''}</div>`
     : `<div class="none">ប្រភពជាឯកសារភាសាខ្មែរសុទ្ធ · <span class="en">no English in
         the source document</span></div>`;
+  // The definition is the point of a dictionary, so it gets body-text size and
+  // sits above the citation, not below it as small print.
+  const def = e.definition
+    ? `<p class="def">${esc(e.definition)}</p>`
+    : `<p class="def nodef">គ្មាននិយមន័យក្នុងឯកសារប្រភព ·
+        <span class="en">the source glossary gave no definition</span></p>`;
+  const eg = e.examples
+    ? `<p class="eg-txt"><span class="lbl">ឧទាហរណ៍ · in use</span>${esc(e.examples)}</p>`
+    : '';
   return `<div class="entry">
     <button class="copy" data-copy="${esc(e.khmer)}">ចម្លង</button>
-    <div class="kh">${esc(e.khmer)}</div>
+    <div class="kh">${esc(e.khmer)}${pos}</div>
     ${gloss}
-    ${e.french ? `<div class="fr">បារាំង · ${esc(e.french)}</div>` : ''}
+    ${def}
+    ${eg}
     <div class="src">${esc(e.author || e.source)}${e.year ? ' · '+esc(e.year) : ''}
       ${e.category ? '<br>'+esc(e.category) : ''}</div>
-    ${e.definition ? `<div class="src">${esc(e.definition)}</div>` : ''}
   </div>`;
+}
+// Long definitions (they run to 1,200 characters) are clamped to five lines and
+// open on tap, so a grid of results stays scannable.
+function wireDefs(root){
+  root.querySelectorAll('.def:not(.nodef)').forEach(d => {
+    if (d.scrollHeight > d.clientHeight + 4){
+      d.classList.add('clamped');
+      d.onclick = () => d.classList.remove('clamped');
+    }
+  });
 }
 function wireCopy(root){
   root.querySelectorAll('.copy').forEach(b => b.onclick = async () => {
@@ -170,7 +211,7 @@ async function doSearch(){
       html += `<p class="hint">បង្ហាញ ${d.results.length} ក្នុងចំណោម ${d.total}</p>`;
     html += d.results.map(entryCard).join('');
   }
-  $('results').innerHTML = html; wireCopy($('results'));
+  $('results').innerHTML = html; wireCopy($('results')); wireDefs($('results'));
 }
 $('q').oninput = () => { clearTimeout(searchTimer); searchTimer=setTimeout(doSearch,180); };
 document.querySelectorAll('.eg').forEach(a => a.onclick = ev => {
@@ -186,7 +227,7 @@ document.querySelectorAll('.cat').forEach(b => b.onclick = async () => {
   $('browse-results').innerHTML =
     `<p class="hint">${d.total} ពាក្យ · <span class="en">showing the first
       ${d.results.length}</span></p>` + d.results.map(entryCard).join('');
-  wireCopy($('browse-results'));
+  wireCopy($('browse-results')); wireDefs($('browse-results'));
 });
 
 /* ---- check a letter ---- */
@@ -246,7 +287,7 @@ function showDetail(kind,i){
       ${c.suggest?`<div class="fix"><button data-replace="${esc(c.char)}"
         data-with="${esc(c.suggest)}">កែឲ្យត្រូវ · fix it</button></div>`:''}</div>`;
   }
-  $('detail').innerHTML = html; wireCopy($('detail'));
+  $('detail').innerHTML = html; wireCopy($('detail')); wireDefs($('detail'));
   $('detail').querySelectorAll('[data-replace]').forEach(b => b.onclick = () => {
     $('text').value = $('text').value.split(b.dataset.replace).join(b.dataset.with);
     $('detail').innerHTML=''; run();

@@ -26,9 +26,13 @@ seconds.
    Khmer is hard to type correctly, so when nothing matches exactly we look for
    entries one syllable away and suggest those. Type `ទិន្នន័` and you still get
    `ទិន្នន័យ`.
-2. **Browse by topic** — law, digital and telecom, economics, geography, and so
+2. **Read the definition, not just the translation.** 4,771 entries (80%) carry
+   a full Khmer definition and 1,116 carry usage examples; both are shown as the
+   main content of the entry, with the translation as the header and the
+   citation underneath.
+3. **Browse by topic** — law, digital and telecom, economics, geography, and so
    on, for people who arrive without a specific query.
-3. **Check a letter** — paste a draft and see the official terms you've used,
+4. **Check a letter** — paste a draft and see the official terms you've used,
    English words that have an approved Khmer form (with a one-tap replace), and
    characters that look like Khmer but aren't and will silently break search.
 
