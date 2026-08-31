@@ -99,7 +99,31 @@ docker build -t terminology-checker . && docker run -p 8000:8000 terminology-che
 The Dockerfile is the deployment unit — it reads `$PORT`, warms the CRF model
 at build time, and needs no secrets.
 
-**Koyeb** (simplest for this stack):
+**Hugging Face Spaces** — free, no credit card, and the fastest path to a URL:
+
+1. Create a Space at <https://huggingface.co/new-space> → SDK **Docker** →
+   Blank → public.
+2. Push this repo to it, with `SPACE_README.md` renamed as the Space's
+   `README.md` (its YAML front-matter is what sets `app_port: 8000`):
+
+   ```bash
+   cp SPACE_README.md README_SPACE_TMP.md
+   git remote add space https://huggingface.co/spaces/<user>/<space>
+   git push space main
+   ```
+
+   Or simply drag the files into the Space's web uploader. The build takes a few
+   minutes, mostly `khmer-nltk`.
+3. The URL is `https://<user>-<space>.hf.space`.
+
+**Fly.io** — `fly.toml` is committed and configured (Singapore, 1 GB, health
+check on `/healthz`). Needs a payment method on the account, then:
+
+```bash
+flyctl deploy
+```
+
+**Koyeb**:
 
 1. Push this repo to GitHub.
 2. Koyeb → Create Service → GitHub → pick this repo.
