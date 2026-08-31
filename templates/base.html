@@ -27,16 +27,23 @@ body{margin:0;background:var(--bg);color:var(--ink);
 a{color:var(--brand)}
 header{background:var(--card);border-bottom:1px solid var(--line);
   position:sticky;top:0;z-index:20}
-.bar{max-width:820px;margin:0 auto;padding:12px 16px;display:flex;
-  align-items:baseline;gap:10px;flex-wrap:wrap}
+.bar{max-width:1240px;margin:0 auto;padding:14px 24px;display:flex;
+  align-items:baseline;gap:12px;flex-wrap:wrap}
 .bar h1{margin:0;font-size:19px;font-weight:700}
 .bar .sub{font-size:12.5px;color:var(--muted)}
-nav{max-width:820px;margin:0 auto;padding:0 10px;display:flex;gap:2px;
+nav{max-width:1240px;margin:0 auto;padding:0 18px;display:flex;gap:2px;
   overflow-x:auto}
 nav button{flex:0 0 auto;background:none;border:0;border-bottom:2.5px solid transparent;
   padding:9px 12px;font:inherit;font-size:15px;color:var(--muted);cursor:pointer}
 nav button[aria-selected="true"]{color:var(--brand);border-color:var(--brand);font-weight:700}
-main{max-width:820px;margin:0 auto;padding:16px 16px 80px}
+main{max-width:1240px;margin:0 auto;padding:20px 24px 80px}
+/* Results flow into columns on a wide screen instead of leaving half the
+   window empty. One column on a phone, up to three on a desktop. */
+.cards{display:grid;gap:12px;
+  grid-template-columns:repeat(auto-fill,minmax(310px,1fr));align-items:start}
+/* Search box and topic list stay put while results scroll past them. */
+.sticky{position:sticky;top:96px}
+@media(max-width:760px){main{padding:14px 14px 70px}.sticky{position:static}}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;
   padding:14px 16px;margin-bottom:14px}
 input[type=search],textarea{width:100%;font:inherit;padding:13px 14px;
@@ -54,7 +61,7 @@ button.primary{background:var(--brand);border-color:var(--brand);color:#fff;font
   color:var(--brand);font-weight:700}
 .muted{color:var(--muted);font-size:13.5px}
 .hint{color:var(--muted);font-size:13.5px;margin:8px 0 0}
-footer{max-width:820px;margin:0 auto;padding:0 16px 40px;color:var(--muted);font-size:13px}
+footer{max-width:1240px;margin:0 auto;padding:0 24px 40px;color:var(--muted);font-size:13px}
 </style>
 </head>
 <body>

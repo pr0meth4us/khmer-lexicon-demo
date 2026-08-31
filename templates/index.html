@@ -12,7 +12,7 @@
 
 <!-- ── search ───────────────────────────────────────────────── -->
 <section id="pane-search">
-  <div class="card">
+  <div class="card hero">
     <input type="search" id="q" autofocus
            placeholder="វាយពាក្យខ្មែរ ឬ ភាសាអង់គ្លេស…" autocomplete="off">
     <p class="hint">ឧទាហរណ៍៖
@@ -23,26 +23,31 @@
       <br><span class="en">Khmer or English. Spelling doesn't have to be perfect —
       if nothing matches we'll suggest the closest official terms.</span></p>
   </div>
-  <div id="results"></div>
+  <div id="results" class="cards"></div>
 </section>
 
 <!-- ── browse ───────────────────────────────────────────────── -->
 <section id="pane-browse" hidden>
-  <div class="card">
-    <b>រកមើលតាមប្រធានបទ</b>
-    <div class="chips">
-      {% for c in categories %}
-      <button class="chip cat" data-cat="{{ c.name }}">{{ c.khmer }}
-        <span class="muted">{{ c.count }}</span></button>
-      {% endfor %}
+  <div class="split">
+    <div class="card sticky">
+      <b>រកមើលតាមប្រធានបទ</b>
+      <div class="muted en" style="margin-bottom:6px">Browse by topic</div>
+      <div class="chips topics">
+        {% for c in categories %}
+        <button class="chip cat" data-cat="{{ c.name }}">{{ c.khmer }}
+          <span class="muted">{{ c.count }}</span></button>
+        {% endfor %}
+      </div>
     </div>
+    <div><div id="browse-results" class="cards"></div></div>
   </div>
-  <div id="browse-results"></div>
 </section>
 
 <!-- ── check ────────────────────────────────────────────────── -->
 <section id="pane-check" hidden>
-  <div class="card">
+ <div class="split">
+  <div>
+  <div class="card sticky">
     <b>បិទភ្ជាប់សេចក្ដីព្រាងលិខិតរបស់អ្នក</b>
     <p class="hint en" style="margin-bottom:10px">Paste a draft. We highlight the
       official terms you've used, suggest approved Khmer for English words, and
@@ -55,6 +60,8 @@
       {% endfor %}
     </div>
   </div>
+  </div>
+  <div>
   <div id="summary"></div>
   <div class="card" id="marked-card" hidden>
     <b>លិខិតរបស់អ្នក</b>
@@ -65,12 +72,20 @@
       <span style="background:var(--bad-bg);border-bottom:2px solid var(--bad)">តួអក្សរខុស</span>
       · <span class="en">tap a highlight for details</span></p>
   </div>
-  <div id="detail"></div>
+  <div id="detail" class="cards"></div>
+  </div>
+ </div>
 </section>
 
 </main>
 
 <style>
+.split{display:grid;gap:16px;grid-template-columns:minmax(280px,340px) minmax(0,1fr);
+  align-items:start}
+@media(max-width:900px){.split{grid-template-columns:1fr}.split .sticky{position:static}}
+.hero input[type=search]{font-size:20px;padding:16px 18px}
+.topics{flex-direction:column;align-items:stretch}
+.topics .chip{text-align:right}
 .entry{background:var(--card);border:1px solid var(--line);border-radius:12px;
   padding:13px 15px;margin-bottom:10px}
 .entry .kh{font-size:23px;font-weight:700;line-height:1.7}
