@@ -1,0 +1,4 @@
+Flask==3.0.3
+gunicorn==22.0.0
+khmer-nltk==1.6
+khmerlex @ git+https://github.com/pr0meth4us/khmer-lexicon.git@main
