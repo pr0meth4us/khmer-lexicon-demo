@@ -7,7 +7,7 @@ positive signal is real and not staged text that happens to look plausible.
 
 SAMPLES = [
     {
-        "name": "Digital policy circular",
+        "name": "សេចក្ដីជូនដំណឹង",
         "note": "Ordinary approved terminology. Everything highlighted here is "
                 "an official term with a ministry and a year behind it.",
         "text": (
@@ -18,7 +18,7 @@ SAMPLES = [
         ),
     },
     {
-        "name": "Draft with English loanwords",
+        "name": "លិខិតមានពាក្យអង់គ្លេស",
         "note": "The same letter written the way drafts actually arrive — with "
                 "English left in place. Each loanword has an approved Khmer "
                 "rendering in the lexicon, offered as a replacement.",
@@ -30,7 +30,7 @@ SAMPLES = [
         ),
     },
     {
-        "name": "Contaminated draft",
+        "name": "អត្ថបទមានតួអក្សរខុស",
         "note": "Looks identical to correct Khmer on screen. Contains a "
                 "Devanagari vowel sign, a Thai vowel and a Cyrillic letter — "
                 "invisible to a reader, fatal to search, sort and dedup.",
@@ -41,7 +41,7 @@ SAMPLES = [
         ),
     },
     {
-        "name": "Boundary trap",
+        "name": "អត្ថបទរដ្ឋបាល",
         "note": "Short lexicon terms sit inside longer, unrelated words here. "
                 "A plain dictionary scan reports them; the cluster and word "
                 "boundary filters throw them out. Open the rejected list.",

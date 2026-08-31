@@ -1,22 +1,44 @@
-# Official Terminology Checker
+# វចនានុក្រមពាក្យផ្លូវការ · Official Khmer Terminology
 
-A civil servant pastes a Khmer government draft. The tool scans it against
-**5,689 official terms in a single pass** and reports, in place:
+A searchable dictionary of Cambodian government terminology — the approved Khmer
+renderings of technical, legal, economic and administrative terms. 5,929 entries
+from 15 official sources, each carrying the ministry, document and year it came
+from.
 
-1. **Every official term found**, with the ministry, document and year behind it,
-   plus the English and French equivalents. The positive signal — *these are the
-   approved terms*.
-2. **English loanwords** that already have an approved Khmer rendering, offered
-   as replacements.
-3. **Script contamination** — characters from neither Khmer nor Latin, and
-   cross-script look-alikes that are invisible on screen but break search, sort
-   and dedup.
-4. **A counter panel showing the actual work done** — terms in the automaton,
-   characters scanned, matches, rejects, and wall-clock milliseconds for both
-   the single-pass and the naive algorithm.
+Until now this existed almost entirely as scanned paper. A person could look a
+term up; a program could not.
 
-The lexicon is a static JSON file. No API keys, no database, no model calls at
-request time. Once the page has loaded it works offline.
+## Who it's for
+
+**An official writing a letter** — *how do I say "blockchain" officially?* Search,
+copy the approved Khmer, and see which ministry approved it, because that is what
+makes it safe to put in a document someone else signs.
+
+**A student or translator reading a decree** — what a term means, in English or
+French, with a citable source.
+
+**Anyone who hits a term in the news** — plain meaning, on a phone, in ten
+seconds.
+
+## Three things it does
+
+1. **Search**, in Khmer or English, and **spelling doesn't have to be perfect**.
+   Khmer is hard to type correctly, so when nothing matches exactly we look for
+   entries one syllable away and suggest those. Type `ទិន្នន័` and you still get
+   `ទិន្នន័យ`.
+2. **Browse by topic** — law, digital and telecom, economics, geography, and so
+   on, for people who arrive without a specific query.
+3. **Check a letter** — paste a draft and see the official terms you've used,
+   English words that have an approved Khmer form (with a one-tap replace), and
+   characters that look like Khmer but aren't and will silently break search.
+
+The interface is Khmer-first with English alongside. It's built for a phone.
+No account, no API keys, no database — the dictionary is a static file, so
+nothing can fail while you're using it, and it works offline once loaded.
+
+The engineering — single-pass matching, syllable-aware boundaries, Unicode
+confusables — is explained on the **/how** page rather than shown to people
+trying to look a word up. What follows is that detail.
 
 ---
 

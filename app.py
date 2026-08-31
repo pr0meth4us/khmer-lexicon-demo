@@ -4,6 +4,7 @@ from pathlib import Path
 from flask import Flask, jsonify, render_template, request
 
 from checker import Checker
+from dictionary import Dictionary
 from samples import SAMPLES
 
 BASE = Path(__file__).resolve().parent
@@ -12,18 +13,34 @@ MAX_CHARS = 8000
 
 app = Flask(__name__)
 
-# Built once at boot: parsing 5.9k entries and building the automaton takes
-# ~150 ms, and the CRF model load takes ~2 s. Neither belongs in a request.
 CHECK = Checker(DATA)
-# Warm the CRF model AND both scan paths. Without this the first request reports
-# cold-cache timings (100+ ms) and the counter panel tells a lie on the one run
-# a reviewer is most likely to look at.
+WORDS = Dictionary(CHECK.entries)
+# Warm the CRF model and both scan paths, so the first person to check a letter
+# does not wait two seconds for a model to load.
 CHECK.check(SAMPLES[0]["text"])
 
 
 @app.get("/")
 def index():
-    return render_template("index.html", about=CHECK.about(), samples=SAMPLES)
+    return render_template("index.html", about=CHECK.about(), samples=SAMPLES,
+                           categories=WORDS.categories())
+
+
+@app.get("/how")
+def how():
+    return render_template("how.html", about=CHECK.about())
+
+
+@app.get("/api/search")
+def api_search():
+    found = WORDS.search(request.args.get("q", ""),
+                         category=request.args.get("category", ""))
+    return jsonify(found)
+
+
+@app.get("/api/senses")
+def api_senses():
+    return jsonify({"senses": WORDS.senses(request.args.get("khmer", ""))})
 
 
 @app.post("/api/check")
