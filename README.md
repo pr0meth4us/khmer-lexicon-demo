@@ -131,8 +131,11 @@ Dockerfile      deployment
 ```
 
 Khmer primitives — grapheme clusters, the Aho-Corasick automaton, wrong-script
-detection — come from [`khmerlex`](https://github.com/pr0meth4us/khmer-lexicon),
-installed from git so there is one implementation rather than a copy per app.
+detection — come from `khmerlex`, which lives in the (currently private)
+`pr0meth4us/khmer-lexicon` repo and is **vendored** here in `khmerlex/`. A git
+install would need a credential, and this repo has no secrets in it. If that
+repo is made public, delete `khmerlex/` and restore the one-line git dependency
+in `requirements.txt` — see `khmerlex/WHY.md`.
 
 ## About the data
 

@@ -1,4 +1,8 @@
 Flask==3.0.3
 gunicorn==22.0.0
 khmer-nltk==1.6
-khmerlex @ git+https://github.com/pr0meth4us/khmer-lexicon.git@main
+# khmerlex's own dependencies. khmerlex itself is vendored (see khmerlex/WHY.md)
+# rather than pip-installed from git, because the lexicon repo is private and a
+# git install would need a credential in this repo.
+regex>=2024.0.0
+confusable_homoglyphs>=3.3.1
