@@ -3,81 +3,264 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{% block title %}វចនានុក្រមពាក្យផ្លូវការ{% endblock %}</title>
+<title>{% block title %}សទ្ទានុក្រមបច្ចេកសព្ទផ្លូវការ{% endblock %}</title>
 <style>
-:root{
-  --bg:#fbfaf8; --card:#fff; --ink:#191714; --muted:#6d675f; --line:#e5e0d9;
-  --brand:#1b4b7d; --brand-soft:#eaf1f8;
-  --ok:#0d6b45; --ok-bg:#e5f3ec; --warn:#8a5300; --warn-bg:#fcf0da;
-  --bad:#9c1a2a; --bad-bg:#fae3e5;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Kantumruy+Pro:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #fbfaf8;
+  --card: #ffffff;
+  --card-rgb: 255, 255, 255;
+  --ink: #191714;
+  --muted: #6d675f;
+  --line: #e5e0d9;
+  --brand: #1b4b7d;
+  --brand-hover: #15395f;
+  --brand-soft: #eaf1f8;
+  --ok: #0d6b45; --ok-bg: #e5f3ec;
+  --warn: #8a5300; --warn-bg: #fcf0da;
+  --bad: #9c1a2a; --bad-bg: #fae3e5;
 }
-@media (prefers-color-scheme: dark){
-  :root{--bg:#141311;--card:#1e1c19;--ink:#f0ece6;--muted:#a49c92;--line:#332f2a;
-    --brand:#7fb3e8;--brand-soft:#1c2c3d;--ok:#5ec99a;--ok-bg:#122a20;
-    --warn:#e0ab5a;--warn-bg:#2e2413;--bad:#ef8b96;--bad-bg:#33191c;}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #141311;
+    --card: #1e1c19;
+    --card-rgb: 30, 28, 25;
+    --ink: #f0ece6;
+    --muted: #a49c92;
+    --line: #332f2a;
+    --brand: #7fb3e8;
+    --brand-hover: #a3c9f0;
+    --brand-soft: #1c2c3d;
+    --ok: #5ec99a; --ok-bg: #122a20;
+    --warn: #e0ab5a; --warn-bg: #2e2413;
+    --bad: #ef8b96; --bad-bg: #33191c;
+  }
 }
-*{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);
-  font-family:"Noto Sans Khmer","Khmer OS","Khmer OS System",ui-sans-serif,
-    system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  font-size:16px;line-height:1.9}
-.en{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  line-height:1.5}
-a{color:var(--brand)}
-header{background:var(--card);border-bottom:1px solid var(--line);
-  position:sticky;top:0;z-index:20}
-.bar{max-width:1240px;margin:0 auto;padding:14px 24px;display:flex;
-  align-items:baseline;gap:12px;flex-wrap:wrap}
-.bar h1{margin:0;font-size:19px;font-weight:700}
-.bar .sub{font-size:12.5px;color:var(--muted)}
-nav{max-width:1240px;margin:0 auto;padding:0 18px;display:flex;gap:2px;
-  overflow-x:auto}
-nav button{flex:0 0 auto;background:none;border:0;border-bottom:2.5px solid transparent;
-  padding:9px 12px;font:inherit;font-size:15px;color:var(--muted);cursor:pointer}
-nav button[aria-selected="true"]{color:var(--brand);border-color:var(--brand);font-weight:700}
-main{max-width:1240px;margin:0 auto;padding:20px 24px 80px}
-/* Results flow into columns on a wide screen instead of leaving half the
-   window empty. One column on a phone, up to three on a desktop. */
-.cards{display:grid;gap:12px;
-  grid-template-columns:repeat(auto-fill,minmax(310px,1fr));align-items:start}
-/* Search box and topic list stay put while results scroll past them. */
-.sticky{position:sticky;top:96px}
-@media(max-width:760px){main{padding:14px 14px 70px}.sticky{position:static}}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
-  padding:14px 16px;margin-bottom:14px}
-input[type=search],textarea{width:100%;font:inherit;padding:13px 14px;
-  border:1.5px solid var(--line);border-radius:10px;background:var(--card);
-  color:var(--ink)}
-input[type=search]:focus,textarea:focus{outline:0;border-color:var(--brand)}
-textarea{min-height:170px;resize:vertical}
-button.btn{font:inherit;font-size:15px;padding:10px 16px;border-radius:10px;
-  border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
-button.primary{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:700}
-.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
-.chip{font-size:13.5px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);
-  background:var(--card);color:var(--ink);cursor:pointer}
-.chip[aria-pressed="true"]{background:var(--brand-soft);border-color:var(--brand);
-  color:var(--brand);font-weight:700}
-.muted{color:var(--muted);font-size:13.5px}
-.hint{color:var(--muted);font-size:13.5px;margin:8px 0 0}
-footer{max-width:1240px;margin:0 auto;padding:0 24px 40px;color:var(--muted);font-size:13px}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Kantumruy Pro', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+.en {
+  font-family: 'Inter', system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+a { color: var(--brand); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--brand-hover); text-decoration: underline; }
+
+header {
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+.bar {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.bar h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--brand), #60a5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.bar .badge {
+  font-size: 13px;
+  background: var(--brand-soft);
+  color: var(--brand);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+.bar .sub {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+nav {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+}
+nav button {
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 12px 16px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+nav button:hover { color: var(--ink); }
+nav button[aria-selected="true"] {
+  color: var(--brand);
+  border-color: var(--brand);
+  font-weight: 700;
+}
+
+main { max-width: 1240px; margin: 0 auto; padding: 32px 24px 80px; }
+
+.cards {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  align-items: start;
+}
+
+.sticky { position: sticky; top: 110px; }
+@media(max-width: 760px) {
+  main { padding: 20px 16px 80px; }
+  .sticky { position: static; }
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s;
+}
+.card:hover.interactive {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+}
+.card.hero {
+  background: linear-gradient(to bottom right, var(--card), var(--brand-soft));
+  border: none;
+}
+
+input[type=search], textarea {
+  width: 100%;
+  font-family: inherit;
+  padding: 16px 20px;
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--ink);
+  font-size: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+input[type=search]:focus, textarea:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 4px var(--brand-soft);
+}
+textarea { min-height: 600px; resize: vertical; font-size: 18px; line-height: 2; padding: 24px; }
+
+button.btn {
+  font-family: inherit;
+  font-size: 15px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+button.btn:hover { background: var(--bg); }
+button.primary {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+  font-weight: 600;
+}
+button.primary:hover {
+  background: var(--brand-hover);
+  border-color: var(--brand-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
+}
+
+.chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.chip {
+  font-family: inherit;
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.chip:hover { border-color: var(--muted); }
+.chip[aria-pressed="true"] {
+  background: var(--brand-soft);
+  border-color: var(--brand);
+  color: var(--brand);
+  font-weight: 600;
+}
+
+.muted { color: var(--muted); }
+.hint { color: var(--muted); font-size: 14px; margin: 12px 0 0; }
+
+footer {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px 60px;
+  color: var(--muted);
+  font-size: 14px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.footer-links {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 </style>
 </head>
 <body>
 <header>
   <div class="bar">
-    <h1>វចនានុក្រមពាក្យផ្លូវការ</h1>
-    <span class="sub en">Official Khmer Terminology · {{ '{:,}'.format(about.entries) }} terms
-      from 15 government sources</span>
+    <h1>សទ្ទានុក្រមបច្ចេកសព្ទផ្លូវការ</h1>
+    <span class="badge">ពាក្យបច្ចេកទេសផ្លូវការ</span>
   </div>
   {% block nav %}{% endblock %}
 </header>
 {% block body %}{% endblock %}
 <footer>
-  ពាក្យទាំងអស់មកពីឯកសារផ្លូវការរបស់រាជរដ្ឋាភិបាលកម្ពុជា។
-  <span class="en">Every term links back to the ministry, document and year it
-  came from. <a href="/how">How this works, and what it can't do</a>.</span>
+  <div>ពាក្យទាំងអស់ត្រូវបានដកស្រង់ចេញពីឯកសារផ្លូវការរបស់រាជរដ្ឋាភិបាលកម្ពុជា។</div>
+  <div class="footer-links">
+    <a href="/how">ដំណើរការកម្មវិធី</a>
+  </div>
 </footer>
 </body>
 </html>

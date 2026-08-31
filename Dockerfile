@@ -4,7 +4,12 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+# Copy the internal khmerlex package
+COPY khmerlex/ /app/khmerlex/
+# Copy the dataset
+COPY dist/ /app/dist/
+# Copy the web application
+COPY web/ /app/
 
 # khmer-nltk ships a CRF model that loads on first use. Warm it at build time so
 # the first request is not a 2-second stall in front of an audience.

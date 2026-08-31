@@ -1,3 +1,7 @@
 __pycache__/
 *.pyc
 .venv/
+
+# The full lexicon is NOT public. See README — the API serves it, and this repo
+# ships a 309-entry sample so the app still runs.
+data/unified_lexicon.json

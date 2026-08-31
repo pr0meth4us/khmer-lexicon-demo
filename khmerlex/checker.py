@@ -26,7 +26,9 @@ import json
 import time
 from pathlib import Path
 
-from khmerlex import AhoCorasick, boundaries, clusters, contaminants, is_khmer
+from .aho import AhoCorasick
+from .contamination import contaminants, is_khmer
+from .graphemes import boundaries, clusters
 
 # Below this many clusters a "term" matches almost anything in spaceless Khmer.
 MIN_TERM_CLUSTERS = 2

@@ -109,6 +109,30 @@ Multi-pattern matching is effectively free; the linguistics is what costs.
 Both paths are checked against each other on every request and the panel says
 whether they agreed.
 
+## The data
+
+**This repository ships a 309-entry sample, not the full lexicon.**
+
+`data/sample_lexicon.json` covers all 15 sources, 287 of its entries carry
+definitions, and it includes every term the preloaded drafts rely on — so the
+app runs, searches, browses and checks letters exactly as deployed. It is enough
+to read the code, run it locally, and see the algorithms work.
+
+The complete 5,929-entry lexicon is served through the API rather than
+distributed as a file. That is deliberate:
+
+- the terminology is compiled from 15 government publications and carries
+  attribution obligations to the ministries that produced them;
+- the entries have been corrected — mark-order normalisation, wrong-script
+  repair, near-duplicate review — and that correction work is the contribution,
+  not the raw scans;
+- an API keeps the data usable by other tools while remaining attributable.
+
+The API is open, needs no key, and is documented at `/api`. It is rate-limited
+to 60 requests/minute and **has no pagination parameter, by design** — see
+`api.py`. If you need bulk access for research, ask.
+
+
 ## Running it
 
 ```bash

@@ -3,12 +3,16 @@ from pathlib import Path
 
 from flask import Flask, jsonify, render_template, request
 
-from checker import Checker
-from dictionary import Dictionary
+import api as public_api
+from khmerlex import Checker, Dictionary
 from samples import SAMPLES
 
 BASE = Path(__file__).resolve().parent
-DATA = Path(os.environ.get("LEXICON_PATH", BASE / "data" / "unified_lexicon.json"))
+# Full lexicon if it is present (deployments mount it), otherwise the 309-entry
+# sample committed here. The full file is deliberately not in this repository.
+_FULL = BASE / "data" / "unified_lexicon.json"
+_SAMPLE = BASE / "data" / "sample_lexicon.json"
+DATA = Path(os.environ.get("LEXICON_PATH", _FULL if _FULL.exists() else _SAMPLE))
 MAX_CHARS = 8000
 
 app = Flask(__name__)
@@ -31,10 +35,18 @@ def how():
     return render_template("how.html", about=CHECK.about())
 
 
+@app.get("/api")
+def api_docs():
+    return render_template("api.html", about=CHECK.about(),
+                           categories=WORDS.categories())
+
+
 @app.get("/api/search")
 def api_search():
+    limit = request.args.get("limit", 60, type=int)
     found = WORDS.search(request.args.get("q", ""),
-                         category=request.args.get("category", ""))
+                         category=request.args.get("category", ""),
+                         limit=limit)
     return jsonify(found)
 
 
@@ -62,6 +74,9 @@ def api_about():
 @app.get("/healthz")
 def healthz():
     return jsonify({"ok": True, "entries": len(CHECK.entries)})
+
+
+public_api.register(app, WORDS, CHECK)
 
 
 if __name__ == "__main__":

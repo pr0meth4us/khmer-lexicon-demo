@@ -12,7 +12,9 @@ a near-match is a dict lookup. Built once at start-up.
 import collections
 import unicodedata
 
-from khmerlex import clusters, edit_distance, is_khmer, normalize
+from .contamination import is_khmer
+from .graphemes import clusters, edit_distance
+from .normalize import normalize
 
 # Khmer labels are the primary UI language; English rides along for reviewers
 # and for the many students who work bilingually.
